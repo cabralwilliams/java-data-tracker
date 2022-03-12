@@ -43,6 +43,54 @@ public class Dataset implements Serializable {
         this.datapointList = datapointList;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getSetName() {
+        return setName;
+    }
+
+    public void setSetName(String setName) {
+        this.setName = setName;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getSetType() {
+        return setType;
+    }
+
+    public void setSetType(Integer setType) {
+        this.setType = setType;
+    }
+
+    public Boolean getIncludeDates() {
+        return includeDates;
+    }
+
+    public void setIncludeDates(Boolean includeDates) {
+        this.includeDates = includeDates;
+    }
+
+    public List<Datapoint> getDatapointList() {
+        return datapointList;
+    }
+
+    public void setDatapointList(List<Datapoint> datapointList) {
+        this.datapointList = datapointList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

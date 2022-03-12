@@ -28,6 +28,14 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Dataset> datasetList;
 
+    public List<Dataset> getDatasetList() {
+        return datasetList;
+    }
+
+    public void setDatasetList(List<Dataset> datasetList) {
+        this.datasetList = datasetList;
+    }
+
     public User() {
 
     }

@@ -24,6 +24,7 @@ public class Datapoint implements Serializable {
     @Column(name = "value_two")
     private Double valueTwo;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "data_date")
     private Date dataDate;
 
@@ -36,6 +37,46 @@ public class Datapoint implements Serializable {
         this.datasetId = datasetId;
         this.valueOne = valueOne;
         this.valueTwo = valueTwo;
+        this.dataDate = dataDate;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getDatasetId() {
+        return datasetId;
+    }
+
+    public void setDatasetId(Integer datasetId) {
+        this.datasetId = datasetId;
+    }
+
+    public Double getValueOne() {
+        return valueOne;
+    }
+
+    public void setValueOne(Double valueOne) {
+        this.valueOne = valueOne;
+    }
+
+    public Double getValueTwo() {
+        return valueTwo;
+    }
+
+    public void setValueTwo(Double valueTwo) {
+        this.valueTwo = valueTwo;
+    }
+
+    public Date getDataDate() {
+        return dataDate;
+    }
+
+    public void setDataDate(Date dataDate) {
         this.dataDate = dataDate;
     }
 
