@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -36,5 +37,29 @@ public class Datapoint implements Serializable {
         this.valueOne = valueOne;
         this.valueTwo = valueTwo;
         this.dataDate = dataDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Datapoint datapoint = (Datapoint) o;
+        return Objects.equals(id, datapoint.id) && Objects.equals(datasetId, datapoint.datasetId) && Objects.equals(valueOne, datapoint.valueOne) && Objects.equals(valueTwo, datapoint.valueTwo) && Objects.equals(dataDate, datapoint.dataDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, datasetId, valueOne, valueTwo, dataDate);
+    }
+
+    @Override
+    public String toString() {
+        return "Datapoint{" +
+                "id=" + id +
+                ", datasetId=" + datasetId +
+                ", valueOne=" + valueOne +
+                ", valueTwo=" + valueTwo +
+                ", dataDate=" + dataDate +
+                '}';
     }
 }
