@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">Java Data Tracker</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="wrapper">
+    <header class="flex-row align-items-center bgColor6">
+        <h1>
+            <a href="/" class="noDecoration">Java Data Tracker</a>
+        </h1>
+        <nav>
+            <div th:if="${loggedIn}" class="flex-row">
+                <a th:href="@{/dashboard}" class="noDecoration">dashboard</a>
+                <a th:href="@{/create}" class="noDecoration">create</a>
+                <a th:href="@{/users/logout}" class="noDecoration">logout</a>
+            </div>
+            <div th:unless="${loggedIn}" class="flex-row">
+                <a th:href="@{/login}" class="noDecoration">login</a>
+            </div>
+        </nav>
+    </header>
+    <main layout:fragment="content">
+
+    </main>
+    <footer class="bgColor6 margin-top-auto">
+        Thanks for visiting!
+    </footer>
+</div>
+</body>
+</html>

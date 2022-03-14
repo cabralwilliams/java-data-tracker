@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+<div layout:fragment="content" class="flex-column">
+    <h2>Welcome, [[${user.username}]]!</h2>
+    <h3>Your Datasets - Click to View or Edit</h3>
+    <div>
+        <ul class="flex-row wrap noType">
+            <li th:each="dataset : ${datasets}">
+                <div th:insert="fragments/dataset-link"></div>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

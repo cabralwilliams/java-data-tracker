@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Create</title>
+</head>
+<body>
+<div layout:fragment="content" class="flex-column">
+    <h2>Create a Dataset</h2>
+    <p>Fill out the form below to create your desired dataset.</p>
+    <form id="create-form" class="flex-column raised-panel">
+        <div>
+            <label for="setName">Dataset Name</label>
+            <input type="text" id="setName" name="setName" th:field="*{setName}">
+        </div>
+        <div>
+            <label for="setType">Dataset Type</label>
+            <select id="setType" name="setType" th:field="*{setType}">
+                <option value="0">Univariate</option>
+                <option value="1">Bivariate</option>
+            </select>
+        </div>
+        <div>
+            <label for="includeDates">Include Dates?</label>
+            <select id="includeDates" name="includeDates" th:field="*{includeDates}">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </div>
+        <input type="hidden" id="userId" name="userId" value="${user.id}">
+        <button type="submit">Create!</button>
+    </form>
+    <div th:if="${loggedIn}">
+        <script src="/js/createSet.js"></script>
+    </div>
+</div>
+</body>
+</html>
