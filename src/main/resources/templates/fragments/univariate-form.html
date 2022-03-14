@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Datapoint Entry</title>
+</head>
+<body>
+    <div class="flex-column" th:fragment="univariate-form">
+        <h2>Enter Datapoint(s) For [[${dataset.setName}]]</h2>
+        <div class="flex-row">
+            <form class="flex-column raised-panel margin-bottom-small" id="datapoint-form">
+                <div class="flex-column margin-bottom-tiny">
+                    <label for="valueOne">Point Value</label>
+                    <input type="number" step="0.001" id="valueOne" name="valueOne">
+                </div>
+                <div th:if="${dataset.includeDates}" class="flex-column margin-bottom-tiny">
+                    <label for="dataDate">Date</label>
+                    <input type="date" id="dataDate" name="dataDate">
+                </div>
+                <div class="flex-column margin-bottom-tiny">
+                    <button type="submit" class="site-btn-1">Store Datapoint</button>
+                </div>
+            </form>
+            <div class="flex-column">
+                <h3>Stored Points</h3>
+                <div class="flex-row">
+                    <div>
+                        <button id="deleteLast" class="site-btn-1">Delete Last</button>
+                    </div>
+                    <form id="save-points">
+                        <button class="site-btn-1" type="submit">Add to Dataset</button>
+                    </form>
+                </div>
+                <div class="flex-column" id="stored-points"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

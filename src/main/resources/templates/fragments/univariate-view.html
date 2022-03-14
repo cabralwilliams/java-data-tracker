@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE"></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="flex-row" th:fragment="univariate-view">
+        <div>Point Value: [[${valueOne}]]</div>
+        <div th:if="${dataDate} &ne; null">Point Date: [[${dataDate}]]</div>
+    </div>
+</body>
+</html>

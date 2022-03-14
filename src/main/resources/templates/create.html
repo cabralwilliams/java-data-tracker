@@ -4,10 +4,10 @@
     <title>Create</title>
 </head>
 <body>
-<div layout:fragment="content" class="flex-column">
-    <h2>Create a Dataset</h2>
+<div layout:fragment="content" class="flex-column align-items-center">
+    <h2 class="flex-title">Create a Dataset</h2>
     <p>Fill out the form below to create your desired dataset.</p>
-    <form id="create-form" class="flex-column raised-panel">
+    <form id="create-form" class="flex-column raised-panel" th:object="${dataset}">
         <div>
             <label for="setName">Dataset Name</label>
             <input type="text" id="setName" name="setName" th:field="*{setName}">
@@ -26,8 +26,10 @@
                 <option value="1">Yes</option>
             </select>
         </div>
-        <input type="hidden" id="userId" name="userId" value="${user.id}">
-        <button type="submit">Create!</button>
+        <textarea class="notDisplayed" id="userId" name="userId">[[${user.id}]]</textarea>
+        <div>
+            <button type="submit" class="site-btn-1">Create!</button>
+        </div>
     </form>
     <div th:if="${loggedIn}">
         <script src="/js/createSet.js"></script>

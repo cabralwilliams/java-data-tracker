@@ -8,26 +8,40 @@
 </head>
 <body>
 <div class="wrapper">
-    <header class="flex-row align-items-center bgColor6">
+    <header class="flex-row bgColor6">
         <h1>
             <a href="/" class="noDecoration">Java Data Tracker</a>
         </h1>
-        <nav>
-            <div th:if="${loggedIn}" class="flex-row">
-                <a th:href="@{/dashboard}" class="noDecoration">dashboard</a>
-                <a th:href="@{/create}" class="noDecoration">create</a>
-                <a th:href="@{/users/logout}" class="noDecoration">logout</a>
-            </div>
-            <div th:unless="${loggedIn}" class="flex-row">
-                <a th:href="@{/login}" class="noDecoration">login</a>
-            </div>
+        <nav class="mainnav">
+            <ul th:if="${loggedIn}" class="noType flex-row space-evenly">
+                <li class="mainnav margin-lr-tiny">
+                    <a th:href="@{/dashboard}" class="noDecoration">Dashboard</a>
+                </li>
+                <li class="mainnav margin-lr-tiny">
+                    <a th:href="@{/datasets}" class="noDecoration">Datasets</a>
+                </li>
+                <li class="mainnav margin-lr-tiny">
+                    <a th:href="@{/create}" class="noDecoration">Create</a>
+                </li>
+                <li class="mainnav margin-lr-tiny">
+                    <a th:href="@{/users/logout}" class="noDecoration">Logout</a>
+                </li>
+            </ul>
+            <ul th:unless="${loggedIn}" class="noType flex-row space-evenly">
+                <li class="mainnav margin-lr-tiny">
+                    <a th:href="@{/datasets}" class="noDecoration">Datasets</a>
+                </li>
+                <li class="mainnav margin-lr-tiny">
+                    <a th:href="@{/login}" class="noDecoration">Login</a>
+                </li>
+            </ul>
         </nav>
     </header>
     <main layout:fragment="content">
 
     </main>
     <footer class="bgColor6 margin-top-auto">
-        Thanks for visiting!
+        <h2>Thanks for visiting!</h2>
     </footer>
 </div>
 </body>

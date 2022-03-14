@@ -6,7 +6,7 @@
 <body>
 <div layout:fragment="content" class="flex-column align-items-center">
     <form action="#" th:action="@{/users/login}" th:object="${user}" method="post" class="flex-column site-form raised-panel margin-bottom-small margin-top-small" id="sign-in-form">
-        <h2>Sign In Below</h2>
+        <h2 class="flex-title">Sign In Below</h2>
         <div class="flex-column margin-bottom-tiny">
             <label for="sign_in_username">Username or Email:</label>
             <input type="text" id="sign_in_username" name="sign_in_username" th:field="*{username}">
@@ -21,7 +21,7 @@
     </form>
 
     <form action="#" th:action="@{/users}" th:object="${user}" method="post" class="flex-column site-form raised-panel margin-bottom-small margin-top-small" id="register-form">
-        <h2>Register Below</h2>
+        <h2 class="flex-title">Register Below</h2>
         <div class="flex-column margin-bottom-tiny">
             <label for="register_username">Username:</label>
             <input type="text" id="register_username" name="register_username" th:field="*{username}">

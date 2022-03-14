@@ -14,7 +14,7 @@ public class PointController {
     PointRepository repository;
 
     @PostMapping("/api/datapoints")
-    public Datapoint addDatapoint(Datapoint datapoint) {
+    public Datapoint addDatapoint(@RequestBody Datapoint datapoint) {
         repository.save(datapoint);
         return datapoint;
     }
@@ -23,7 +23,7 @@ public class PointController {
     public Datapoint updateDatapoint(@PathVariable Integer id, Datapoint datapoint) {
         Datapoint tempDatapoint = repository.getById(id);
 
-        if(!tempDatapoint.equals(null)) {
+        if(tempDatapoint != null) {
             datapoint.setId(tempDatapoint.getId());
             repository.save(datapoint);
         }

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title>Datasets</title>
+</head>
+<body>
+<div layout:fragment="content" class="flex-column">
+    <h2 class="flex-title">Datasets</h2>
+    <p>
+        Click on any link below to get more information about a dataset.
+    </p>
+    <div class="flex-row" th:each="dataset : ${datasets}">
+        <div th:insert="fragments/dataset-link :: dataset-link"></div>
+    </div>
+</div>
+</body>
+</html>

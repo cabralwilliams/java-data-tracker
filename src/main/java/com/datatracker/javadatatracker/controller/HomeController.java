@@ -30,10 +30,10 @@ public class HomeController {
     //Homepage route
     @GetMapping("/")
     public String homepageSetup(Model model, HttpServletRequest request) {
-        User sessionUser = new User();
+        //User sessionUser = new User();
+        User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
 
-        if(request.getSession(false) != null) {
-            sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
+        if(sessionUser != null) {
             model.addAttribute("loggedIn", sessionUser.isLoggedIn());
         } else {
             model.addAttribute("loggedIn", false);
@@ -132,7 +132,8 @@ public class HomeController {
     //Login page
     @GetMapping("/login")
     public String loginPage(Model model, HttpServletRequest request) {
-        if(request.getSession(false) != null) {
+        User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
+        if(sessionUser != null) {
             return "redirect:/";
         }
         model.addAttribute("user", new User());
