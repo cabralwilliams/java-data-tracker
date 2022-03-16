@@ -5,16 +5,17 @@ function storeDatapoint(event) {
     event.preventDefault();
     const includeDates = !!document.querySelector("#dataDate");
     const pointOb = {
-        valueOne: parseFloat(document.querySelector("#valueOne").value)
+        valueOne: parseFloat(document.querySelector("#valueOne").value),
+        valueTwo: parseFloat(document.querySelector("#valueTwo").value)
     };
     pointOb.dataDate = includeDates ? document.querySelector("#dataDate").value : null;
     datapoints.push(pointOb);
     document.querySelector("#stored-points").innerHTML = "";
     for(let i = 0; i < datapoints.length; i++) {
         const nextDiv = document.createElement("div");
-        let textVal = `Point Value: ${datapoints[i].valueOne}`;
+        let textVal = `Value 1: ${datapoints[i].valueOne} | Value 2: ${datapoints[i].valueTwo}`;
         if(includeDates) {
-            textVal += ` - Date: ${datapoints[i].dataDate}`;
+            textVal += ` | Date: ${datapoints[i].dataDate}`;
         }
         nextDiv.textContent = textVal;
         document.querySelector("#stored-points").appendChild(nextDiv);
@@ -29,9 +30,9 @@ function dropDatapoint() {
         document.querySelector("#stored-points").innerHTML = "";
         for(let i = 0; i < datapoints.length; i++) {
             const nextDiv = document.createElement("div");
-            let textVal = `Point Value: ${datapoints[i].valueOne}`;
+            let textVal = `Value 1: ${datapoints[i].valueOne} | Value 2: ${datapoints[i].valueTwo}`;
             if(includeDates) {
-                textVal += ` - Date: ${datapoints[i].dataDate}`;
+                textVal += ` | Date: ${datapoints[i].dataDate}`;
             }
             nextDiv.textContent = textVal;
             document.querySelector("#stored-points").appendChild(nextDiv);

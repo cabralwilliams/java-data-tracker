@@ -6,6 +6,7 @@ import com.datatracker.javadatatracker.model.User;
 import com.datatracker.javadatatracker.repository.PointRepository;
 import com.datatracker.javadatatracker.repository.SetRepository;
 import com.datatracker.javadatatracker.repository.UserRepository;
+import com.datatracker.javadatatracker.utils.DTrans;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,8 +71,8 @@ public class DatatrackerController {
         List<Datapoint> datapoints = pointRepository.findAllDatapointsByDatasetId(datasetId);
         //Need to get the userId of the dataset so that we can determine whether the user has edit rights
         Integer dUserId = dataset.getUserId();
-        User sessionUser = new User();
-        if(request.getSession(false) != null) {
+        User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
+        if(sessionUser != null) {
             sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
             Integer userId = sessionUser.getId();
             if(dUserId.equals(userId)) {
@@ -84,8 +85,39 @@ public class DatatrackerController {
             model.addAttribute("canEdit", false);
             model.addAttribute("loggedIn", false);
         }
+        boolean isBivaraiate = dataset.getSetType() == 1;
+        DTrans dTrans = new DTrans();
         model.addAttribute("dataset", dataset);
         model.addAttribute("datapoints", datapoints);
+        model.addAttribute("includeDates", dataset.getIncludeDates());
+        model.addAttribute("isBivariate", isBivaraiate);
+        if(datapoints.size() > 0) {
+            model.addAttribute("containsData", true);
+            if(isBivaraiate) {
+                double[] setAverages = dTrans.getAverageDataValuesBivariate(datapoints);
+                double[] setSumOfSquares = dTrans.getSumOfSquaresBivariate(datapoints);
+                double setCoSums = dTrans.getSumOfCoSquares(datapoints);
+                double correlation = dTrans.getCorrelation(datapoints);
+                double slopeCo = correlation*Math.sqrt(setSumOfSquares[1])/Math.sqrt(setSumOfSquares[0]);
+                double intCo = setAverages[1] - slopeCo*setAverages[0];
+                model.addAttribute("setAverages", setAverages);
+                model.addAttribute("setSumOfSquares", setSumOfSquares);
+                model.addAttribute("correlationCoefficient", correlation);
+                model.addAttribute("slopeCo", slopeCo);
+                model.addAttribute("intCo", intCo);
+            } else {
+                double setAverage = dTrans.getAverageDataValueUnivariate(datapoints);
+                double setSumOfSquares = dTrans.getSumOfSquaresUnivariate(datapoints);
+                double[] setVariances = dTrans.getUnivariateVariances(datapoints);
+                model.addAttribute("setAverage", setAverage);
+                model.addAttribute("setSumOfSquares", setSumOfSquares);
+                model.addAttribute("setVariances", setVariances);
+                double[] setStandardDeviations = new double[] { Math.sqrt(setVariances[0]), Math.sqrt(setVariances[1])};
+                model.addAttribute("setStandardDeviations", setStandardDeviations);
+            }
+        } else {
+            model.addAttribute("containsData", false);
+        }
         return "single-dataset";
     }
 

@@ -9,13 +9,80 @@
     <div th:if="${canEdit}" class="flex-row">
         <button class="site-btn-1" id="toggle_edit">Toggle Edit Form</button>
     </div>
-    <div>
+    <div th:if="${canEdit}" class="flex-row">
         <div class="flex-column">
-            <div th:each="datapoint : ${datapoints}">
+            <div th:if="${containsData}">
+                <h3>Summary Statistics</h3>
+                <div th:if="${isBivariate}" class="flex-column">
+                    <div>Mean Values: Mean 1: [[${setAverages[0]}]] | Mean 2: [[${setAverages[1]}]]</div>
+                    <div>Sums of Square Differences: Var 1: [[${setSumOfSquares[0]}]] | Var 2: [[${setSumOfSquares[1]}]]</div>
+                    <div>Correlation Coefficient: [[${correlationCoefficient}]]</div>
+                    <div>Regression Coefficients: Slope: <span id="slopeCo">[[${slopeCo}]]</span> | Intercept: <span id="intCo">[[${intCo}]]</span></div>
+                </div>
+                <div th:unless="${isBivariate}" class="flex-column">
+                    <div>Mean Value: [[${setAverage}]]</div>
+                    <div>Population Standard Deviation: [[${setStandardDeviations[0]}]]</div>
+                    <div>Sample Standard Deviation: [[${setStandardDeviations[1]}]]</div>
+                </div>
+            </div>
+            <h3>Current Datapoints</h3>
+            <div th:if="${containsData}">
+                <div th:unless="${isBivariate}" th:each="datapoint : ${datapoints}">
+                    <div th:insert="fragments/univariate-view :: univariate-view"></div>
+                </div>
+                <div th:if="${isBivariate}" th:each="datapoint : ${datapoints}">
+                    <div th:insert="fragments/bivariate-view :: bivariate-view"></div>
+                </div>
+            </div>
+            <div th:unless="${containsData}">
+                <i>There is currently no data for this dataset.</i>
+            </div>
+        </div>
+        <div th:unless="${isBivariate}" th:insert="fragments/univariate-form :: univariate-form"></div>
+        <div th:if="${isBivariate}" th:insert="fragments/bivariate-form :: bivariate-form"></div>
+    </div>
+    <div th:unless="${canEdit}" class="flex-column">
+        <div th:if="${containsData}">
+            <h3>Summary Statistics</h3>
+            <div th:if="${isBivariate}" class="flex-column">
+                <div>Mean Values: Mean 1: [[${setAverages[0]}]] | Mean 2: [[${setAverages[1]}]]</div>
+                <div>Sums of Square Differences: Var 1: [[${setSumOfSquares[0]}]] | Var 2: [[${setSumOfSquares[1]}]]</div>
+                <div>Correlation Coefficient: [[${correlationCoefficient}]]</div>
+                <div>Regression Coefficients: Slope: <span id="slopeCo">[[${slopeCo}]]</span> | Intercept: <span id="intCo">[[${intCo}]]</span></div>
+            </div>
+            <div th:unless="${isBivariate}" class="flex-column">
+                <div>Mean Value: [[${setAverage}]]</div>
+                <div>Population Standard Deviation: [[${setStandardDeviations[0]}]]</div>
+                <div>Sample Standard Deviation: [[${setStandardDeviations[1]}]]</div>
+            </div>
+        </div>
+        <h3>Current Datapoints</h3>
+        <div th:if="${containsData}">
+            <div th:unless="${isBivariate}" th:each="datapoint : ${datapoints}">
                 <div th:insert="fragments/univariate-view :: univariate-view"></div>
+            </div>
+            <div th:if="${isBivariate}" th:each="datapoint : ${datapoints}">
+                <div th:insert="fragments/bivariate-view :: bivariate-view"></div>
+            </div>
+        </div>
+        <div th:unless="${containsData}">
+            <i>There is currently no data for this dataset.</i>
+        </div>
+    </div>
+    <div id="dataGraphics1" class="width80percent"></div>
+    <div th:if="${containsData}">
+        <div th:unless="${isBivariate}">
+            <div th:unless="${includeDates}">
+                <script src="/js/noDateUnivariate.js"></script>
+            </div>
+        </div>
+        <div th:if="${isBivariate}">
+            <div th:unless="${includeDates}">
+                <script src="/js/noDateBivariate.js"></script>
             </div>
         </div>
     </div>
+
 </div>
 </body>
 </html>

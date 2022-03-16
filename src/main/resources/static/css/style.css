@@ -58,6 +58,10 @@ code {
     left: 0;
 }
 
+.width80percent {
+    width: 80%;
+}
+
 /* Background Color Styles */
 .bgColor8 {
     background-color: var(--color8);
