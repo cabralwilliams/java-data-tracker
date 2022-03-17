@@ -6,23 +6,45 @@
 <body>
 <div layout:fragment="content" class="flex-column">
     <h2 class="flex-title">[[${dataset.setName}]]</h2>
-    <div th:if="${canEdit}" class="flex-row">
+    <div th:if="${canEdit}" class="flex-row margin-bottom-tiny">
         <button class="site-btn-1" id="toggle_edit">Toggle Edit Form</button>
+    </div>
+    <div th:if="${canEdit}" class="notDisplayed flex-row space-evenly" id="datasetEditDiv">
+        <form id="changeSetName" class="raised-panel flex-column margin-bottom-small">
+            <h3>Edit Set Name</h3>
+            <div class="flex-column margin-bottom-tiny">
+                <label for="setName">New Set Name</label>
+                <input type="text" id="setName" name="setName">
+            </div>
+            <div class="flex-column">
+                <button type="submit" class="site-btn-1">Change Name</button>
+            </div>
+        </form>
+        <form id="deletedSet" class="raised-panel flex-column align-items-center">
+            <h3>Delete Dataset</h3>
+            <p class="margin-bottom-tiny">Use the button below to delete this dataset.</p>
+            <div class="flex-column">
+                <button type="submit" class="site-btn-1">Delete Dataset</button>
+            </div>
+        </form>
     </div>
     <div th:if="${canEdit}" class="flex-row">
         <div class="flex-column">
             <div th:if="${containsData}">
                 <h3>Summary Statistics</h3>
                 <div th:if="${isBivariate}" class="flex-column">
-                    <div>Mean Values: Mean 1: [[${setAverages[0]}]] | Mean 2: [[${setAverages[1]}]]</div>
-                    <div>Sums of Square Differences: Var 1: [[${setSumOfSquares[0]}]] | Var 2: [[${setSumOfSquares[1]}]]</div>
-                    <div>Correlation Coefficient: [[${correlationCoefficient}]]</div>
+                    <div>Mean Values: Mean 1: <span id="mean1">[[${setAverages[0]}]]</span> | Mean 2: <span id="mean2">[[${setAverages[1]}]]</span></div>
+                    <div>Sums of Square Differences: Var 1: <span id="squares1">[[${setSumOfSquares[0]}]]</span> | Var 2: <span id="squares2">[[${setSumOfSquares[1]}]]</span></div>
+                    <div>Correlation Coefficient: <span id="correlation">[[${correlationCoefficient}]]</span></div>
                     <div>Regression Coefficients: Slope: <span id="slopeCo">[[${slopeCo}]]</span> | Intercept: <span id="intCo">[[${intCo}]]</span></div>
                 </div>
                 <div th:unless="${isBivariate}" class="flex-column">
-                    <div>Mean Value: [[${setAverage}]]</div>
-                    <div>Population Standard Deviation: [[${setStandardDeviations[0]}]]</div>
-                    <div>Sample Standard Deviation: [[${setStandardDeviations[1]}]]</div>
+                    <div id="meanDiv">Mean Value: [[${setAverage}]]</div>
+                    <div id="popStandDevDiv">Population Standard Deviation: [[${setStandardDeviations[0]}]]</div>
+                    <div id="sampleStandDevDiv">Sample Standard Deviation: [[${setStandardDeviations[1]}]]</div>
+                    <div id="correlationDiv"></div>
+                    <div id="regressionDiv"></div>
+                    <div>(Note that January 1, 1970 is treated as day 0.)</div>
                 </div>
             </div>
             <h3>Current Datapoints</h3>
@@ -45,15 +67,18 @@
         <div th:if="${containsData}">
             <h3>Summary Statistics</h3>
             <div th:if="${isBivariate}" class="flex-column">
-                <div>Mean Values: Mean 1: [[${setAverages[0]}]] | Mean 2: [[${setAverages[1]}]]</div>
-                <div>Sums of Square Differences: Var 1: [[${setSumOfSquares[0]}]] | Var 2: [[${setSumOfSquares[1]}]]</div>
-                <div>Correlation Coefficient: [[${correlationCoefficient}]]</div>
+                <div>Mean Values: Mean 1: <span id="mean1">[[${setAverages[0]}]]</span> | Mean 2: <span id="mean2">[[${setAverages[1]}]]</span></div>
+                <div>Sums of Square Differences: Var 1: <span id="squares1">[[${setSumOfSquares[0]}]]</span> | Var 2: <span id="squares2">[[${setSumOfSquares[1]}]]</span></div>
+                <div>Correlation Coefficient: <span id="correlation">[[${correlationCoefficient}]]</span></div>
                 <div>Regression Coefficients: Slope: <span id="slopeCo">[[${slopeCo}]]</span> | Intercept: <span id="intCo">[[${intCo}]]</span></div>
             </div>
             <div th:unless="${isBivariate}" class="flex-column">
-                <div>Mean Value: [[${setAverage}]]</div>
-                <div>Population Standard Deviation: [[${setStandardDeviations[0]}]]</div>
-                <div>Sample Standard Deviation: [[${setStandardDeviations[1]}]]</div>
+                <div id="meanDiv">Mean Value: [[${setAverage}]]</div>
+                <div id="popStandDevDiv">Population Standard Deviation: [[${setStandardDeviations[0]}]]</div>
+                <div id="sampleStandDevDiv">Sample Standard Deviation: [[${setStandardDeviations[1]}]]</div>
+                <div id="correlationDiv"></div>
+                <div id="regressionDiv"></div>
+                <div>(Note that January 1, 1970 is treated as day 0.)</div>
             </div>
         </div>
         <h3>Current Datapoints</h3>
@@ -69,9 +94,35 @@
             <i>There is currently no data for this dataset.</i>
         </div>
     </div>
+    <div th:if="${containsData}" class="flex-column align-items-center margin-bottom-tiny" id="updateFormDiv">
+        <p>Below is the scatterplot with line of best fit for these data.  You can optionally add a chart title and axes information with the form below.</p>
+        <form id="axesForm" class="flex-column raised-panel margin-bottom-small">
+            <div class="flex-column margin-bottom-tiny">
+                <label for="chart-title">Chart Title</label>
+                <input type="text" id="chart-title" name="chart-title" placeholder="Enter title here">
+            </div>
+            <div class="flex-column margin-bottom-tiny">
+                <label for="x-axis">X-Axis Label</label>
+                <input type="text" id="x-axis" name="x-axis" placeholder="x-axis label">
+            </div>
+            <div class="flex-column margin-bottom-tiny">
+                <label for="y-axis">Y-Axis Label</label>
+                <input type="text" id="y-axis" name="y-axis" placeholder="y-axis label">
+            </div>
+            <div class="flex-column">
+                <button type="submit" class="site-btn-1">Update</button>
+            </div>
+        </form>
+    </div>
+    <div th:if="${containsData}" class="flex-column align-items-center">
+        <button class="site-btn-1" id="toggleUpdateForm">Toggle Form</button>
+    </div>
     <div id="dataGraphics1" class="width80percent"></div>
     <div th:if="${containsData}">
         <div th:unless="${isBivariate}">
+            <div th:if="${includeDates}">
+                <script src="/js/dateUnivariate.js"></script>
+            </div>
             <div th:unless="${includeDates}">
                 <script src="/js/noDateUnivariate.js"></script>
             </div>
@@ -82,7 +133,7 @@
             </div>
         </div>
     </div>
-
+    <script th:if="${canEdit}" src="/js/editDataSet.js"></script>
 </div>
 </body>
 </html>

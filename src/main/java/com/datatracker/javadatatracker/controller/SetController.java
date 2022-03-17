@@ -32,11 +32,15 @@ public class SetController {
     }
 
     @PutMapping("/api/datasets/{id}")
-    public Dataset updateDataSetById(@PathVariable Integer id, Dataset dataset) {
+    public Dataset updateDataSetById(@PathVariable Integer id, @RequestBody Dataset dataset) {
         Dataset tempDataset = repository.getById(id);
 
-        if(!tempDataset.equals(null)) {
+        if(tempDataset != null) {
             dataset.setId(tempDataset.getId());
+            dataset.setIncludeDates(tempDataset.getIncludeDates());
+            dataset.setUserId(tempDataset.getUserId());
+            dataset.setSetType(tempDataset.getSetType());
+            dataset.setDatapointList(tempDataset.getDatapointList());
             repository.save(dataset);
         }
         return dataset;
