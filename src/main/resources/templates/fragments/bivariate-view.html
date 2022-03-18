@@ -10,7 +10,7 @@
 <div class="flex-row" th:fragment="bivariate-view">
     <div class="dataValOne" th:attr="data-valueOne=${valueOne}">Variable 1: [[${datapoint.valueOne}]]</div>
     <div class="dataValTwo" th:attr="data-valueTwo=${valueTwo}">Variable 2: [[${datapoint.valueTwo}]]</div>
-    <div th:if="${includeDates}" class="dataDataDate" th:attr="data-dataDate=${dataDate}">Point Date: [[${dataDate}]]</div>
+    <div th:if="${includeDates}" class="dataDataDate" th:attr="data-dataDate=${dataDate}">Point Date: [[${datapoint.dataDate}]]</div>
 </div>
 </body>
 </html>

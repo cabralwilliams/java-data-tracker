@@ -44,7 +44,7 @@
                     <div id="sampleStandDevDiv">Sample Standard Deviation: [[${setStandardDeviations[1]}]]</div>
                     <div id="correlationDiv"></div>
                     <div id="regressionDiv"></div>
-                    <div>(Note that January 1, 1970 is treated as day 0.)</div>
+                    <div th:if="${includeDates}">(Note that January 1, 1970 is treated as day 0.)</div>
                 </div>
             </div>
             <h3>Current Datapoints</h3>
@@ -78,7 +78,7 @@
                 <div id="sampleStandDevDiv">Sample Standard Deviation: [[${setStandardDeviations[1]}]]</div>
                 <div id="correlationDiv"></div>
                 <div id="regressionDiv"></div>
-                <div>(Note that January 1, 1970 is treated as day 0.)</div>
+                <div th:if="${includeDates}">(Note that January 1, 1970 is treated as day 0.)</div>
             </div>
         </div>
         <h3>Current Datapoints</h3>
@@ -95,19 +95,27 @@
         </div>
     </div>
     <div th:if="${containsData}" class="flex-column align-items-center margin-bottom-tiny" id="updateFormDiv">
-        <p>Below is the scatterplot with line of best fit for these data.  You can optionally add a chart title and axes information with the form below.</p>
+        <p th:if="${isBivariate}">Below is the scatterplot with line of best fit for these data.  You can optionally add a chart title and axes information with the form below.</p>
+        <div th:unless="${isBivariate}">
+            <p th:if="${includeDates}">Below is the scatterplot with line of best fit for these data.  You can optionally add a chart title and axes information with the form below.</p>
+            <p th:unless="${includeDates}">Below is a histogram depicting these data.  You can optionally include a chart name and x-axes label using the form below.</p>
+        </div>
         <form id="axesForm" class="flex-column raised-panel margin-bottom-small">
             <div class="flex-column margin-bottom-tiny">
                 <label for="chart-title">Chart Title</label>
                 <input type="text" id="chart-title" name="chart-title" placeholder="Enter title here">
             </div>
             <div class="flex-column margin-bottom-tiny">
-                <label for="x-axis">X-Axis Label</label>
+                <label for="x-axis">X-Axis Label/Series 1</label>
                 <input type="text" id="x-axis" name="x-axis" placeholder="x-axis label">
             </div>
-            <div class="flex-column margin-bottom-tiny">
-                <label for="y-axis">Y-Axis Label</label>
+            <div class="flex-column margin-bottom-tiny" th:if="${isBivariate}">
+                <label for="y-axis">Y-Axis Label/Series 2</label>
                 <input type="text" id="y-axis" name="y-axis" placeholder="y-axis label">
+            </div>
+            <div th:if="${isBivariate}" class="flex-column margin-bottom-tiny">
+                <label th:if="${includeDates}" for="dateLabel">Date Label</label>
+                <input type="text" id="dateLabel" name="dateLabel" th:if="${includeDates}">
             </div>
             <div class="flex-column">
                 <button type="submit" class="site-btn-1">Update</button>
@@ -128,6 +136,9 @@
             </div>
         </div>
         <div th:if="${isBivariate}">
+            <div th:if="${includeDates}">
+                <script src="/js/dateBivariate.js"></script>
+            </div>
             <div th:unless="${includeDates}">
                 <script src="/js/noDateBivariate.js"></script>
             </div>
