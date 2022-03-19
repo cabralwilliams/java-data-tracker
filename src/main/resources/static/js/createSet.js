@@ -5,6 +5,7 @@ async function createDataSet(event) {
     const setType = parseInt(document.querySelector("#setType").value);
     const userId = parseInt(document.querySelector("#userId").value);
     let useDates = parseInt(document.querySelector("#includeDates").value);
+    const publicity = parseInt(document.querySelector("#publicity").value);
     const includeDates = useDates === 1 ? true : false;
 
     if(!setName) {
@@ -17,7 +18,8 @@ async function createDataSet(event) {
             setName,
             setType,
             userId,
-            includeDates
+            includeDates,
+            publicity
         }),
         headers: { "Content-Type": "application/json" }
     });

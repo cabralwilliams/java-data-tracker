@@ -273,8 +273,8 @@ function generateChartType2(series1, series2, slope, intercept, title="", series
     } else {
         svgStr += `<text x='160.5' y='-314.5' font-size='15' fill='black'>${title}</text>`;
         svgStr += `<text x='160' y='-315' font-size='15' fill='${fontColor}'>${title}</text>`;
-        svgStr += `<text x='125' y='27' font-size='12' fill='${fontColor}'>${series2Label}</text>`;
-        svgStr += `<text x='50' y='-45' font-size='12' fill='${fontColor}' transform='rotate(-90)'>${series1Label}</text>`;
+        svgStr += `<text x='125' y='27' font-size='12' fill='${fontColor}'>${series1Label}</text>`;
+        svgStr += `<text x='50' y='-45' font-size='12' fill='${fontColor}' transform='rotate(-90)'>${series2Label}</text>`;
     }
     svgStr += `<rect x='0' y='-300' height='300' width='500' fill='none' stroke='black' stroke-width='${lineW}' />`;
     for(let i = 1; i < 10; i++) {
@@ -294,6 +294,27 @@ function generateChartType2(series1, series2, slope, intercept, title="", series
     return svgStr;
 }
 
+function changeChartLabels(event) {
+    event.preventDefault();
+    let setTitle = document.querySelector("#chart-title").value.trim();
+    setTitle = setTitle ? setTitle : "";
+    let label1 = document.querySelector("#x-axis").value.trim();
+    label1 = label1 ? label1 : "";
+    let label2 = document.querySelector("#y-axis").value.trim();
+    label2 = label2 ? label2 : "";
+    let dateLabel = document.querySelector("#dateLabel").value.trim();
+    dateLabel = dateLabel ? dateLabel : "";
+    const rD1Date = getRegressionCoefficients([adjustedDays, averageDay, daySquaresSum], [dataVals1, mean1, squares1]);
+    const rD2Date = getRegressionCoefficients([adjustedDays, averageDay, daySquaresSum], [dataVals2, mean2, squares2]);
+    const rD12 = getRegressionCoefficients([dataVals1, mean1, squares1], [dataVals2, mean2, squares2]);
+    document.querySelector("#dataGraphics1").innerHTML = `${generateChartType1(dataVals1, dataDates, rD1Date.slope, rD1Date.intercept, setTitle, label1, dateLabel, 1)}
+    <div class='padding-lr-tiny'>Slope: ${rD1Date.slope.toFixed(3)} | Intercept: ${rD1Date.intercept.toFixed(3)} | Correlation: ${rD1Date.correlation.toFixed(4)}</div>
+    ${generateChartType1(dataVals2, dataDates, rD2Date.slope, rD2Date.intercept, setTitle, label2, dateLabel, 2)}
+    <div class='padding-lr-tiny'>Slope: ${rD2Date.slope.toFixed(3)} | Intercept: ${rD2Date.intercept.toFixed(3)} | Correlation: ${rD2Date.correlation.toFixed(4)}</div>
+    ${generateChartType2(dataVals2, dataVals1, rD12.slope, rD12.intercept, setTitle, label1, label2)}
+    <div class='padding-lr-tiny'>Slope: ${rD12.slope.toFixed(3)} | Intercept: ${rD12.intercept.toFixed(3)} | Correlation: ${rD12.correlation.toFixed(4)}</div>`;
+}
+
 if(dataVals1.length >= 2) {
     regressionData1Date = getRegressionCoefficients([adjustedDays, averageDay, daySquaresSum], [dataVals1, mean1, squares1]);
     regressionData2Date = getRegressionCoefficients([adjustedDays, averageDay, daySquaresSum], [dataVals2, mean2, squares2]);
@@ -305,8 +326,13 @@ if(dataVals1.length >= 2) {
     <div>Series 2 with Series 1: ${JSON.stringify(regressionData21)}</div>`;
 
     document.querySelector("#dataGraphics1").innerHTML = `${generateChartType1(dataVals1, dataDates, regressionData1Date.slope, regressionData1Date.intercept, "", "", "", 1)}
+    <div class='padding-lr-tiny'>Slope: ${regressionData1Date.slope.toFixed(3)} | Intercept: ${regressionData1Date.intercept.toFixed(3)} | Correlation: ${regressionData1Date.correlation.toFixed(4)}</div>
     ${generateChartType1(dataVals2, dataDates, regressionData2Date.slope, regressionData2Date.intercept, "", "", "", 2)}
-    ${generateChartType2(dataVals2, dataVals1, regressionData12.slope, regressionData12.intercept, "", "", "")}`;
+    <div class='padding-lr-tiny'>Slope: ${regressionData2Date.slope.toFixed(3)} | Intercept: ${regressionData2Date.intercept.toFixed(3)} | Correlation: ${regressionData2Date.correlation.toFixed(4)}</div>
+    ${generateChartType2(dataVals2, dataVals1, regressionData12.slope, regressionData12.intercept, "", "", "")}
+    <div class='padding-lr-tiny'>Slope: ${regressionData12.slope.toFixed(3)} | Intercept: ${regressionData12.intercept.toFixed(3)} | Correlation: ${regressionData12.correlation.toFixed(4)}</div>`;
+
+    axesForm.addEventListener("submit", changeChartLabels);
 }
 
 toggleUpdateForm.addEventListener("click", () => {

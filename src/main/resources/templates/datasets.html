@@ -5,12 +5,17 @@
 </head>
 <body>
 <div layout:fragment="content" class="flex-column">
-    <h2 class="flex-title">Datasets</h2>
-    <p>
+    <h2 class="flex-title padding-lr-tiny">Datasets</h2>
+    <p class="padding-lr-tiny">
         Click on any link below to get more information about a dataset.
     </p>
-    <div class="flex-row" th:each="dataset : ${datasets}">
+    <h3 class="padding-lr-tiny">All Public Sets</h3>
+    <div class="flex-row padding-lr-tiny" th:each="dataset : ${datasets}">
         <div th:insert="fragments/dataset-link :: dataset-link"></div>
+    </div>
+    <h3 th:if="${userHasSets}" class="padding-lr-tiny">Your Sets</h3>
+    <div class="flex-row padding-lr-tiny" th:each="userSet : ${userSets}" th:if="${userHasSets}">
+        <div th:insert="fragments/userset-link :: userset-link"></div>
     </div>
 </div>
 </body>

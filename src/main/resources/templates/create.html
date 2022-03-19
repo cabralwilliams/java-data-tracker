@@ -26,6 +26,13 @@
                 <option value="1">Yes</option>
             </select>
         </div>
+        <div>
+            <label for="publicity">Public Dataset?</label>
+            <select id="publicity" name="publicity" th:field="*{publicity}">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+        </div>
         <textarea class="notDisplayed" id="userId" name="userId">[[${user.id}]]</textarea>
         <div>
             <button type="submit" class="site-btn-1">Create!</button>

@@ -24,6 +24,9 @@ public class Dataset implements Serializable {
     @Column(name = "set_type")
     private Integer setType;
 
+    @Column(name = "publicity")
+    private Integer publicity;
+
     //This will give the user the option to store dates for the dataset - just in case the user wants to track against time
     @Column(name = "include_dates")
     private Boolean includeDates;
@@ -34,12 +37,13 @@ public class Dataset implements Serializable {
     public Dataset() {
     }
 
-    public Dataset(Integer id, String setName, Integer userId, Integer setType, Boolean includeDates, List<Datapoint> datapointList) {
+    public Dataset(Integer id, String setName, Integer userId, Integer setType, Boolean includeDates, Integer publicity, List<Datapoint> datapointList) {
         this.id = id;
         this.setName = setName;
         this.userId = userId;
         this.setType = setType;
         this.includeDates = includeDates;
+        this.publicity = publicity;
         this.datapointList = datapointList;
     }
 
@@ -83,6 +87,14 @@ public class Dataset implements Serializable {
         this.includeDates = includeDates;
     }
 
+    public Integer getPublicity() {
+        return publicity;
+    }
+
+    public void setPublicity(Integer publicity) {
+        this.publicity = publicity;
+    }
+
     public List<Datapoint> getDatapointList() {
         return datapointList;
     }
@@ -96,12 +108,12 @@ public class Dataset implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Dataset dataset = (Dataset) o;
-        return Objects.equals(id, dataset.id) && Objects.equals(setName, dataset.setName) && Objects.equals(userId, dataset.userId) && Objects.equals(setType, dataset.setType) && Objects.equals(includeDates, dataset.includeDates) && Objects.equals(datapointList, dataset.datapointList);
+        return Objects.equals(id, dataset.id) && Objects.equals(setName, dataset.setName) && Objects.equals(userId, dataset.userId) && Objects.equals(setType, dataset.setType) && Objects.equals(publicity, dataset.publicity) && Objects.equals(includeDates, dataset.includeDates) && Objects.equals(datapointList, dataset.datapointList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, setName, userId, setType, includeDates, datapointList);
+        return Objects.hash(id, setName, userId, setType, publicity, includeDates, datapointList);
     }
 
     @Override
@@ -111,6 +123,7 @@ public class Dataset implements Serializable {
                 ", setName='" + setName + '\'' +
                 ", userId=" + userId +
                 ", setType=" + setType +
+                ", publicity=" + publicity +
                 ", includeDates=" + includeDates +
                 ", datapointList=" + datapointList +
                 '}';

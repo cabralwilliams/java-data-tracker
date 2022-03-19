@@ -21,6 +21,15 @@ const dataVals = Array.from(dataEls, el => {
 
 let sortedVals = [...dataVals];
 sortedVals = sortedVals.sort((a,b) => a - b);
+let median;
+
+if(sortedVals.length%2 === 0) {
+    median = (sortedVals[sortedVals.length/2 - 1] + sortedVals[sortedVals.length/2])/2;
+} else {
+    median = sortedVals[Math.floor(sortedVals.length/2)];
+}
+
+document.querySelector("#medianDiv").textContent = `Median Value: ${median.toFixed(4)}`;
 
 const range = sortedVals[sortedVals.length - 1] - sortedVals[0];
 

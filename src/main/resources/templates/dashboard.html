@@ -5,9 +5,9 @@
 </head>
 <body>
 <div layout:fragment="content" class="flex-column">
-    <h2 class="flex-title">Welcome, [[${user.username}]]!</h2>
-    <h3>Your Datasets - Click to View or Edit</h3>
-    <div>
+    <h2 class="flex-title padding-lr-tiny">Welcome, [[${user.username}]]!</h2>
+    <h3 class="padding-lr-tiny">Your Datasets - Click to View or Edit</h3>
+    <div class="padding-lr-tiny">
         <ul class="flex-row wrap noType">
             <li th:each="dataset : ${datasets}">
                 <div th:insert="fragments/dataset-link :: dataset-link"></div>

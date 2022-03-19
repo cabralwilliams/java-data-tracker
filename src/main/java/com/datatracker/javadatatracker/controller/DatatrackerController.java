@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class DatatrackerController {
@@ -66,12 +67,24 @@ public class DatatrackerController {
 
     @GetMapping("/datasets/{id}")
     public String datasetPageSetup(@PathVariable Integer id, Model model, HttpServletRequest request) throws Exception {
-        Dataset dataset = setRepository.getById(id);
+        Dataset dataset = new Dataset();
+        User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
+        try {
+            dataset = setRepository.getById(id);
+            if(dataset.getPublicity() == 0 && !Objects.equals(dataset.getUserId(), sessionUser.getId())) {
+                System.out.println(dataset.getUserId());
+                System.out.println(sessionUser.getId());
+                return "not-found";
+            }
+        } catch (EntityNotFoundException e) {
+            return "not-found";
+        }
+
         Integer datasetId = dataset.getId();
         List<Datapoint> datapoints = pointRepository.findAllDatapointsByDatasetId(datasetId);
         //Need to get the userId of the dataset so that we can determine whether the user has edit rights
         Integer dUserId = dataset.getUserId();
-        User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
+
         if(sessionUser != null) {
             sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
             Integer userId = sessionUser.getId();
@@ -79,6 +92,10 @@ public class DatatrackerController {
                 model.addAttribute("canEdit", true);
             } else {
                 model.addAttribute("canEdit", false);
+                if(dataset.getPublicity() == 0) {
+                    model.addAttribute("loggedIn", sessionUser.isLoggedIn());
+                    return "not-found";
+                }
             }
             model.addAttribute("loggedIn", sessionUser.isLoggedIn());
         } else {
@@ -136,16 +153,140 @@ public class DatatrackerController {
     }
 
     @GetMapping("/datasets")
-    public String datasetsPageSetup(Model model, HttpServletRequest request) {
+    public String datasetsPageSetup(Model model, HttpServletRequest request) throws Exception {
         User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
+        List<Dataset> userSets = new List<Dataset>() {
+            @Override
+            public int size() {
+                return 0;
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public boolean contains(Object o) {
+                return false;
+            }
+
+            @Override
+            public Iterator<Dataset> iterator() {
+                return null;
+            }
+
+            @Override
+            public Object[] toArray() {
+                return new Object[0];
+            }
+
+            @Override
+            public <T> T[] toArray(T[] a) {
+                return null;
+            }
+
+            @Override
+            public boolean add(Dataset dataset) {
+                return false;
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                return false;
+            }
+
+            @Override
+            public boolean containsAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(Collection<? extends Dataset> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(int index, Collection<? extends Dataset> c) {
+                return false;
+            }
+
+            @Override
+            public boolean removeAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean retainAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public void clear() {
+
+            }
+
+            @Override
+            public Dataset get(int index) {
+                return null;
+            }
+
+            @Override
+            public Dataset set(int index, Dataset element) {
+                return null;
+            }
+
+            @Override
+            public void add(int index, Dataset element) {
+
+            }
+
+            @Override
+            public Dataset remove(int index) {
+                return null;
+            }
+
+            @Override
+            public int indexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public int lastIndexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public ListIterator<Dataset> listIterator() {
+                return null;
+            }
+
+            @Override
+            public ListIterator<Dataset> listIterator(int index) {
+                return null;
+            }
+
+            @Override
+            public List<Dataset> subList(int fromIndex, int toIndex) {
+                return null;
+            }
+        };
 
         if(sessionUser != null) {
             //A user is logged in
             model.addAttribute("loggedIn", sessionUser.isLoggedIn());
+            userSets = sessionUser.getDatasetList();
+            if(userSets.size() > 0) {
+                System.out.println(userSets.size());
+                model.addAttribute("userHasSets", true);
+                model.addAttribute("userSets", userSets);
+            }
         } else {
             model.addAttribute("loggedIn", false);
+            model.addAttribute("userHasSets", false);
         }
-        List<Dataset> datasets = setRepository.findAll();
+//        List<Dataset> datasets = setRepository.findAll();
+        List<Dataset> datasets = setRepository.findAllDatasetsByPublicity(1);
         model.addAttribute("datasets", datasets);
         return "datasets";
     }

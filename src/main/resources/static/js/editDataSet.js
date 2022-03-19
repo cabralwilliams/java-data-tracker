@@ -9,6 +9,7 @@ toggleEdit.addEventListener("click", () => {
 async function updateSetName(event) {
     event.preventDefault();
     const setName = document.querySelector('#setName').value.trim();
+    const publicity = parseInt(document.querySelector("#publicity").value);
 
     if(setName === "" || setName === null) {
         return;
@@ -18,7 +19,7 @@ async function updateSetName(event) {
 
     const response = await fetch(`/api/datasets/${datasetId}`, {
         method: "PUT",
-        body: JSON.stringify({ setName }),
+        body: JSON.stringify({ setName, publicity }),
         headers: { "Content-Type": "application/json" }
     });
 
@@ -30,3 +31,19 @@ async function updateSetName(event) {
 }
 
 document.querySelector("#changeSetName").addEventListener("submit", updateSetName);
+
+const deleteDataSet = async event => {
+    event.preventDefault();
+    const id = parseInt(window.location.toString().split("/")[window.location.toString().split("/").length - 1]);
+    const response = await fetch(`/api/datasets/${id}`, {
+        method: "DELETE"
+    });
+
+    if(response.ok) {
+        window.location.replace("/dashboard");
+    } else {
+        alert(`Could not delete dataset - ${response.status}`);
+    }
+}
+
+document.querySelector("#deleteSet").addEventListener("submit", deleteDataSet);
