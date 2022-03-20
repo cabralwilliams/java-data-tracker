@@ -176,7 +176,8 @@ const generateLinearRegressionNoLabels = (array1,array2,slope,intercept) => {
     const scaleY = 270/(maxY - minY);
     //y-value is (array2[i] + offSetY)*scaleY
     const scaledSlope = slope*scaleY/scaleX;
-    const translatedIntercept = scaleY*(intercept + offSetY);
+    let translatedIntercept = slope*minX + intercept;
+    translatedIntercept = (translatedIntercept - minY)*scaleY;
 //    console.log(`Translated Intercept: ${translatedIntercept}`);
 //    const translatedZeroX = scaleX*offSetX;
 //    console.log(`Translated ZeroX: ${translatedZeroX}`);
@@ -194,7 +195,7 @@ const generateLinearRegressionNoLabels = (array1,array2,slope,intercept) => {
         outputStr += `<circle cx='${(array1[i].adjustedDay + offSetX)*scaleX}' cy='${-(array2[i] + offSetY)*scaleY}' r='${rad}' stroke='none' fill='blue' />`;
         outputStr += `${getXVal(array1[i], (array1[i].adjustedDay + offSetX)*scaleX, fontSize)}`;
     }
-    outputStr += `<line x1='0' y1='${-(scaledSlope*minX*scaleX + translatedIntercept)}' x2='450' y2='${-(scaledSlope*maxX*scaleX + translatedIntercept)}' stroke='red' stroke-width='${lineW}' />`;
+    outputStr += `<line x1='0' y1='${-translatedIntercept}' x2='450' y2='${-(scaledSlope*450 + translatedIntercept)}' stroke='red' stroke-width='${lineW}' />`;
     //Add more later
     outputStr += "</svg>";
     return outputStr;
@@ -225,7 +226,8 @@ const generateLinearRegressionLabels = (array1,array2,slope,intercept,title,labe
     const scaleY = 270/(maxY - minY);
     //y-value is (array2[i] + offSetY)*scaleY
     const scaledSlope = slope*scaleY/scaleX;
-    const translatedIntercept = scaleY*(intercept + offSetY);
+    let translatedIntercept = slope*minX + intercept;
+    translatedIntercept = (translatedIntercept - minY)*scaleY;
 //    console.log(`Translated Intercept: ${translatedIntercept}`);
     const translatedZeroX = scaleX*offSetX;
 //    console.log(`Translated ZeroX: ${translatedZeroX}`);
@@ -243,7 +245,7 @@ const generateLinearRegressionLabels = (array1,array2,slope,intercept,title,labe
         outputStr += `<circle cx='${(array1[i].adjustedDay + offSetX)*scaleX}' cy='${-(array2[i] + offSetY)*scaleY}' r='${rad}' stroke='none' fill='blue' />`;
         outputStr += `${getXVal(array1[i], (array1[i].adjustedDay + offSetX)*scaleX, fontSize)}`;
     }
-    outputStr += `<line x1='0' y1='${-(scaledSlope*minX*scaleX + translatedIntercept)}' x2='450' y2='${-(scaledSlope*maxX*scaleX + translatedIntercept)}' stroke='red' stroke-width='${lineW}' />`;
+    outputStr += `<line x1='0' y1='${-translatedIntercept}' x2='450' y2='${-(scaledSlope*450 + translatedIntercept)}' stroke='red' stroke-width='${lineW}' />`;
     //Add more later
     outputStr += "</svg>";
     return outputStr;

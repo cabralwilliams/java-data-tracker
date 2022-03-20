@@ -74,9 +74,9 @@ const generateLinearRegressionNoLabels = (array1,array2,slope,intercept) => {
         return "Too few datapoints!  Add more to see the linear regression!";
     }
     let sortedX = [...array1];
-    sortedX = array1.sort((a,b) => a - b);
+    sortedX = sortedX.sort((a,b) => a - b);
     let sortedY = [...array2];
-    sortedY = array2.sort((a,b) => a - b);
+    sortedY = sortedY.sort((a,b) => a - b);
     let minX = (sortedX[0] > 0 && sortedX[0] < 10) ? 0 : sortedX[0];
     let maxX = sortedX[sortedX.length - 1];
     let minY = (sortedY[0] > 0 && sortedY[0] < 10) ? 0 : sortedY[0];
@@ -89,7 +89,8 @@ const generateLinearRegressionNoLabels = (array1,array2,slope,intercept) => {
     const scaleY = 270/(maxY - minY);
     //y-value is (array2[i] + offSetY)*scaleY
     const scaledSlope = slope*scaleY/scaleX;
-    const translatedIntercept = scaleY*(intercept + offSetY);
+    let translatedIntercept = slope*minX + intercept;
+    translatedIntercept = (translatedIntercept - minY)*scaleY;
     const translatedZeroX = scaleX*offSetX;
     let lineW = 0.75;
     let rad = 2;
@@ -117,9 +118,9 @@ const generateLinearRegressionLabels = (array1,array2,slope,intercept,title,labe
         return "Too few datapoints!  Add more to see the linear regression!";
     }
     let sortedX = [...array1];
-    sortedX = array1.sort((a,b) => a - b);
+    sortedX = sortedX.sort((a,b) => a - b);
     let sortedY = [...array2];
-    sortedY = array2.sort((a,b) => a - b);
+    sortedY = sortedY((a,b) => a - b);
     let minX = (sortedX[0] > 0 && sortedX[0] < 10) ? 0 : sortedX[0];
     let maxX = sortedX[sortedX.length - 1];
     let minY = (sortedY[0] > 0 && sortedY[0] < 10) ? 0 : sortedY[0];
@@ -136,7 +137,8 @@ const generateLinearRegressionLabels = (array1,array2,slope,intercept,title,labe
     const scaleY = 270/(maxY - minY);
     //y-value is (array2[i] + offSetY)*scaleY
     const scaledSlope = slope*scaleY/scaleX;
-    const translatedIntercept = scaleY*(intercept + offSetY);
+    let translatedIntercept = slope*minX + intercept;
+    translatedIntercept = (translatedIntercept - minY)*scaleY;
     const translatedZeroX = scaleX*offSetX;
     let lineW = 0.75;
     let rad = 2;

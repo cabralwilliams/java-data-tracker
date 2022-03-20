@@ -208,7 +208,9 @@ function generateChartType1(series1, dateSeries, slope, intercept, title="", ser
     const scaleY = 270/(maxY - minY);
     //y-value is (array2[i] + offSetY)*scaleY
     const scaledSlope = slope*scaleY/scaleX;
-    const translatedIntercept = scaleY*(intercept + offSetY);
+    let translatedIntercept = slope*minX + intercept;
+    translatedIntercept = (translatedIntercept - minY)*scaleY;
+    console.log(translatedIntercept);
     let lineW = 0.75;
     let fontSize = 9;
     let rad = 2;
@@ -234,7 +236,7 @@ function generateChartType1(series1, dateSeries, slope, intercept, title="", ser
         svgStr += `<circle cx='${(dateSeries[i].adjustedDay + offSetX)*scaleX}' cy='${-(series1[i] + offSetY)*scaleY}' r='${rad}' stroke='none' fill='blue' />`;
         svgStr += `${getXValDate(dateSeries[i], (dateSeries[i].adjustedDay + offSetX)*scaleX, fontSize)}`;
     }
-    svgStr += `<line x1='0' y1='${-(scaledSlope*minX*scaleX + translatedIntercept)}' x2='450' y2='${-(scaledSlope*maxX*scaleX + translatedIntercept)}' stroke='red' stroke-width='${lineW}' />`;
+    svgStr += `<line x1='0' y1='${-translatedIntercept}' x2='450' y2='${-(scaledSlope*450 + translatedIntercept)}' stroke='red' stroke-width='${lineW}' />`;
     //Add more later
     svgStr += "</svg>";
     return svgStr;
@@ -262,7 +264,9 @@ function generateChartType2(series1, series2, slope, intercept, title="", series
     const scaleY = 270/(maxY - minY);
     //y-value is (array2[i] + offSetY)*scaleY
     const scaledSlope = slope*scaleY/scaleX;
-    const translatedIntercept = scaleY*(intercept + offSetY);
+    let translatedIntercept = slope*minX + intercept;
+    translatedIntercept = (translatedIntercept - minY)*scaleY;
+    console.log(translatedIntercept);
     let lineW = 0.75;
     let fontSize = 9;
     let rad = 2;
@@ -288,7 +292,7 @@ function generateChartType2(series1, series2, slope, intercept, title="", series
     for(let i = 0; i < series1.length; i++) {
         svgStr += `<circle cx='${(series2[i] + offSetX)*scaleX}' cy='${-(series1[i] + offSetY)*scaleY}' r='${rad}' stroke='none' fill='blue' />`;
     }
-    svgStr += `<line x1='0' y1='${-(scaledSlope*minX*scaleX + translatedIntercept)}' x2='450' y2='${-(scaledSlope*maxX*scaleX + translatedIntercept)}' stroke='red' stroke-width='${lineW}' />`;
+    svgStr += `<line x1='0' y1='${-translatedIntercept}' x2='450' y2='${-(scaledSlope*450 + translatedIntercept)}' stroke='red' stroke-width='${lineW}' />`;
     //Add more later
     svgStr += "</svg>";
     return svgStr;
