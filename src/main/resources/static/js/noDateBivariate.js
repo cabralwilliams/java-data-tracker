@@ -120,7 +120,7 @@ const generateLinearRegressionLabels = (array1,array2,slope,intercept,title,labe
     let sortedX = [...array1];
     sortedX = sortedX.sort((a,b) => a - b);
     let sortedY = [...array2];
-    sortedY = sortedY((a,b) => a - b);
+    sortedY = sortedY.sort((a,b) => a - b);
     let minX = (sortedX[0] > 0 && sortedX[0] < 10) ? 0 : sortedX[0];
     let maxX = sortedX[sortedX.length - 1];
     let minY = (sortedY[0] > 0 && sortedY[0] < 10) ? 0 : sortedY[0];

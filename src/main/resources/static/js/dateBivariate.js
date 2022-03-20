@@ -249,6 +249,7 @@ function generateChartType2(series1, series2, slope, intercept, title="", series
     console.log(`Slope: ${slope}`);
     console.log(`Intercept: ${intercept}`);
     let sortedX = [...series2];
+    sortedX = sortedX.sort((a, b) => a - b);
     let sortedY = [...series1];
     sortedY = sortedY.sort((a,b) => a - b);
     let minX = sortedX[0];
