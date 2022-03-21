@@ -2,6 +2,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+![Linear Regression of Gretzky's NHL Goals](./images/gretzky-goal-stats.jpg)
+
 ## Description
 This project allows a user to create datasets - univariate or bivariate - and decide whether to attach dates to the datapoints.  The user can also choose whether to make the dataset public.  Once the dataset is created and datapoints are added, the application will perform certain data analyses on the provided data.  The motivations behind the project were two-fold: to get practice using Java on the backend of an application and to create an application that would actually be useable in creating quick data analyses.  The project utilizes Java, Spring Boot, Thymeleaf, and MySQL.
 
